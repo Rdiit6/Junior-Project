@@ -1,5 +1,5 @@
-#APP Name
-App that tracks extreme weather
+#ClimaPulse
+A desktop climate intelligence suite designed to monitor, analyze, and detect global extreme weather anomalies by continuously cross-referencing live weather feeds against 30-year historical climate baselines.
 
 "Mendoan"
 GROUP LEADER : NALEN RADITYA SADEWA
