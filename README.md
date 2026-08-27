@@ -1,7 +1,7 @@
 #APP Name
-Brief description of the app
+App that tracks extreme weather
 
-PEH
+"Yok IP4"
 GROUP LEADER : NALEN RADITYA SADEWA
 Member 1 : ARYA RADITYA ARDANA
 Member 2 : CHRISTANIA PUTRI RACHMADEWI
