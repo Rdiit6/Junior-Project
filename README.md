@@ -1,7 +1,7 @@
 #APP Name
 App that tracks extreme weather
 
-"Yok IP4"
+"Mendoan"
 GROUP LEADER : NALEN RADITYA SADEWA
 Member 1 : ARYA RADITYA ARDANA
 Member 2 : CHRISTANIA PUTRI RACHMADEWI
