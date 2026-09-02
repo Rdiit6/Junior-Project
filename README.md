@@ -3,9 +3,12 @@
 A desktop climate intelligence suite designed to monitor, analyze, and detect global extreme weather anomalies by continuously cross-referencing live weather feeds against 30-year historical climate baselines.
 
 "Mendoan"
-GROUP LEADER : NALEN RADITYA SADEWA - 536801
-Member 1 : ARYA RADITYA ARDANA
-Member 2 : CHRISTANIA PUTRI RACHMADEWI - 532874
-Member 3 : MUHAMMAD IBRAHIM ASY SYAUQI WAHYUAJI
 
+536660
 Arya Raditya Ardana - 24/536660/TK/59543
+
+GROUP LEADER : NALEN RADITYA SADEWA - 536801  
+- Member 1 : 
+- Member 2 : CHRISTANIA PUTRI RACHMADEWI - 532874  
+- Member 3 : MUHAMMAD IBRAHIM ASY SYAUQI WAHYUAJI
+main
