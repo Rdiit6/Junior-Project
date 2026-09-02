@@ -7,5 +7,5 @@ A desktop climate intelligence suite designed to monitor, analyze, and detect gl
 GROUP LEADER : NALEN RADITYA SADEWA - 536801  
 - Member 1 : ARYA RADITYA ARDANA - 536660
 - Member 2 : CHRISTANIA PUTRI RACHMADEWI - 532874  
-- Member 3 : MUHAMMAD IBRAHIM ASY SYAUQI WAHYUAJI
+- Member 3 : MUHAMMAD IBRAHIM ASY SYAUQI WAHYUAJI - 5327610
 
