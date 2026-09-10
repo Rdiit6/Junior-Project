@@ -1,0 +1,10 @@
+# Secrets
+.env
+
+# .NET build artifacts
+bin/
+obj/
+*.user
+
+# SQLite local DB
+*.db
