@@ -1,1 +1,31 @@
 @* Dashboard.razor - Blazor UI component (Frontend) *@
+@* This component is the main entry point for the ClimaPulse dashboard. *@
+
+@code {
+    // ── State ──────────────────────────────────────────────────────────
+    private List<ClimaPulse.Models.City> _watchlist = new();
+    private List<ClimaPulse.Models.AnomalyResult> _results = new();
+    private string _activeTheme = "light";
+
+    // ── Lifecycle ──────────────────────────────────────────────────────
+    protected override async Task OnInitializedAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    // ── Actions ────────────────────────────────────────────────────────
+    private async Task RefreshAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void AddCity(ClimaPulse.Models.City city)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void ExportLog()
+    {
+        throw new NotImplementedException();
+    }
+}
