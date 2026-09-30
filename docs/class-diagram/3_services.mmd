@@ -1,0 +1,63 @@
+classDiagram
+direction TB
+  class IAnomalyStrategy {
+    <<interface>>
+    +Evaluate(double observed, double baseline) AnomalyResult
+  }
+  class TemperatureStrategy {
+    +Evaluate(double observed, double baseline) AnomalyResult
+  }
+  class PrecipitationStrategy {
+    +Evaluate(double observed, double baseline) AnomalyResult
+  }
+  class WeatherService {
+    +FetchLiveAsync(City city) Task
+    +FetchArchiveAsync(City city) Task
+  }
+  class AnomalyDetectionService {
+    +AnalyzeCityAsync(City city) Task~AnomalyResult~
+    +AssignTier(double zScore) SeverityTier
+  }
+  class AdvisoryService {
+    +GetAdvisory(AnomalyResult result) List~string~
+  }
+  class ClimateTwinEngine {
+    +FindTwin(AnomalyResult result) City
+  }
+  class ImpactEstimatorService {
+    +ComputeCDD(double temp) double
+    +ComputeWetBulb(double temp, double humidity) double
+  }
+  class DashboardState {
+    +event OnChange
+    +UpdateResults(List~City~ watchlist, List~AnomalyResult~ results) void
+  }
+  class AnomalyResult {
+    +double ObservedValue
+    +double BaselineValue
+    +double DeviationSigma
+    +string AnomalyType
+    +SeverityTier SeverityTier
+  }
+  class BaselineRepository {
+    +GetByCityMetricMonth(int cityId, MetricType metric, int month) Baseline
+    +Upsert(Baseline item) void
+  }
+  class AnomalyEventRepository {
+    +GetOpenEvent(int cityId, MetricType metric) AnomalyEvent
+    +Close(int eventId, DateTime endedAtUtc) bool
+    +ExportCsv(string filePath) void
+    +ExportJson(string filePath) void
+  }
+
+IAnomalyStrategy <|.. TemperatureStrategy
+IAnomalyStrategy <|.. PrecipitationStrategy
+IAnomalyStrategy ..> AnomalyResult
+AnomalyDetectionService --> IAnomalyStrategy
+AnomalyDetectionService --> WeatherService
+AnomalyDetectionService --> BaselineRepository
+AnomalyDetectionService --> AnomalyEventRepository
+AnomalyDetectionService ..> AnomalyResult
+AdvisoryService ..> AnomalyResult
+ClimateTwinEngine ..> AnomalyResult
+DashboardState ..> AnomalyResult

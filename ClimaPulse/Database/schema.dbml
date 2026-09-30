@@ -1,0 +1,124 @@
+// ClimaPulse Database Design (SQLite)
+
+Project ClimaPulse {
+  database_type: 'SQLite'
+  Note: '''
+    Desktop climate anomaly monitoring app.
+    Baselines are per city, metric, and calendar month.
+    Anomaly events use event-on-transition logging with
+    hysteresis so one row equals one sustained episode.
+  '''
+}
+
+Table UserProfile {
+  profile_id                 integer [pk, increment]
+  display_name               text    [not null, note: 'max 50 chars']
+  preferred_temperature_unit text    [not null, default: 'C', note: 'C or F']
+  preferred_locale           text    [not null, default: 'id-ID']
+  created_at                 text    [not null, note: 'ISO 8601 UTC']
+  is_active                  integer [not null, default: 1, note: 'boolean 0 or 1']
+}
+
+Table City {
+  city_id        integer [pk, increment]
+  name           text    [not null]
+  country_code   text    [not null, note: 'ISO 3166-1 alpha-2']
+  admin_region   text
+  latitude       real    [not null]
+  longitude      real    [not null]
+  timezone       text    [not null, note: 'IANA identifier']
+  elevation_m    real
+  open_meteo_ref text
+}
+
+Table Watchlist {
+  watchlist_id           integer [pk, increment]
+  profile_id             integer [not null]
+  city_id                integer [not null]
+  alert_threshold_zscore real    [not null, default: 2.0]
+  notes                  text
+  added_at               text    [not null]
+
+  Indexes {
+    (profile_id, city_id) [unique]
+    city_id
+  }
+}
+
+Table HistoricalObservation {
+  observation_id integer [pk, increment]
+  city_id        integer [not null]
+  metric_type    text    [not null, note: 'temperature_2m, precipitation, wind_speed_10m']
+  observed_at    text    [not null, note: 'ISO 8601 UTC, hourly grain']
+  value          real    [not null]
+  source         text    [not null, default: 'open-meteo']
+  fetched_at     text    [not null]
+
+  Indexes {
+    (city_id, metric_type, observed_at) [unique]
+  }
+}
+
+Table Baseline {
+  baseline_id         integer [pk, increment]
+  city_id             integer [not null]
+  metric_type         text    [not null]
+  month               integer [not null, note: '1 through 12']
+  mean_value          real    [not null]
+  stddev_value        real    [not null]
+  sample_size         integer [not null]
+  baseline_start_year integer [not null]
+  baseline_end_year   integer [not null]
+  computed_at         text    [not null]
+
+  Indexes {
+    (city_id, metric_type, month) [unique]
+  }
+}
+
+Table Advisory {
+  advisory_id    integer [pk, increment]
+  metric_type    text    [not null]
+  severity_tier  text    [not null, note: 'watch, warning, or extreme']
+  locale         text    [not null, default: 'id-ID']
+  category       text    [not null, note: 'health or climate']
+  title          text    [not null]
+  body           text    [not null]
+  version        integer [not null, default: 1]
+  effective_from text    [not null]
+
+  Indexes {
+    (metric_type, severity_tier, locale, version) [unique]
+  }
+}
+
+Table AnomalyEvent {
+  event_id                 integer [pk, increment]
+  city_id                  integer [not null]
+  baseline_id              integer [not null]
+  advisory_id              integer
+  metric_type              text    [not null]
+  severity_tier            text    [not null, note: 'watch, warning, or extreme']
+  started_at               text    [not null]
+  ended_at                 text    [note: 'NULL while the episode is open']
+  peak_at                  text    [not null]
+  peak_observed_value      real    [not null]
+  peak_zscore              real    [not null]
+  baseline_mean_snapshot   real    [not null]
+  baseline_stddev_snapshot real    [not null]
+  status                   text    [not null, default: 'active', note: 'active or closed']
+  created_at               text    [not null]
+
+  Indexes {
+    (city_id, metric_type, started_at)
+    status
+  }
+}
+
+Ref: Watchlist.profile_id            > UserProfile.profile_id [delete: cascade]
+Ref: Watchlist.city_id               > City.city_id           [delete: cascade]
+Ref: HistoricalObservation.city_id   > City.city_id           [delete: cascade]
+Ref: Baseline.city_id                > City.city_id           [delete: cascade]
+Ref: AnomalyEvent.city_id            > City.city_id           [delete: restrict]
+Ref: AnomalyEvent.baseline_id        > Baseline.baseline_id   [delete: restrict]
+Ref: AnomalyEvent.advisory_id        > Advisory.advisory_id   [delete: set null]

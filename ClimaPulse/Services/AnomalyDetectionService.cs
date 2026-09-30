@@ -14,18 +14,18 @@ public class AnomalyDetectionService
     private readonly IAnomalyStrategy _strategy;
     private readonly WeatherService _weatherService;
     private readonly BaselineRepository _baselineRepo;
-    private readonly AnomalyLogRepository _logRepo;
+    private readonly AnomalyEventRepository _eventRepo;
 
     public AnomalyDetectionService(
         IAnomalyStrategy strategy,
         WeatherService weatherService,
         BaselineRepository baselineRepo,
-        AnomalyLogRepository logRepo)
+        AnomalyEventRepository eventRepo)
     {
         _strategy = strategy;
         _weatherService = weatherService;
         _baselineRepo = baselineRepo;
-        _logRepo = logRepo;
+        _eventRepo = eventRepo;
     }
 
     public async Task<AnomalyResult> AnalyzeCityAsync(City city)

@@ -13,4 +13,23 @@ GROUP LEADER : NALEN RADITYA SADEWA - 536801
 
 
 MODULE 3
+
+Class diagram, updated to match the 7-table database (UserProfile, City, Watchlist, HistoricalObservation, Baseline, Advisory, AnomalyEvent). Mermaid sources are in `docs/class-diagram/`.
+
+**1. Domain model and enums**
+
+![Domain model](docs/class-diagram/1_domain_model.png)
+
+**2. Data access layer**
+
+![Data access](docs/class-diagram/2_data_access.png)
+
+**3. Services and strategies**
+
+![Services](docs/class-diagram/3_services.png)
+
+<details><summary>Previous version (before the database alignment)</summary>
+
 <img width="1732" height="1410" alt="ClimaPulse_ClassDiagram_Final drawio" src="https://github.com/user-attachments/assets/c6bdca66-93dd-4e1f-84a8-b8b477ea1861" />
+
+</details>

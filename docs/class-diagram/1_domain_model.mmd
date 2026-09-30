@@ -1,0 +1,114 @@
+classDiagram
+direction LR
+  class UserProfile {
+    +int Id
+    +string DisplayName
+    +string PreferredTemperatureUnit
+    +string PreferredLocale
+    +DateTime CreatedAt
+    +bool IsActive
+  }
+  class WatchlistEntry {
+    +int Id
+    +int ProfileId
+    +int CityId
+    +double AlertThresholdZScore
+    +string? Notes
+    +DateTime AddedAt
+  }
+  class City {
+    +int Id
+    +string Name
+    +string CountryCode
+    +string? AdminRegion
+    +double Latitude
+    +double Longitude
+    +string Timezone
+    +double? ElevationM
+    +string? OpenMeteoRef
+  }
+  class HistoricalObservation {
+    +int Id
+    +int CityId
+    +MetricType MetricType
+    +DateTime ObservedAt
+    +double Value
+    +string Source
+    +DateTime FetchedAt
+  }
+  class Baseline {
+    +int Id
+    +int CityId
+    +MetricType MetricType
+    +int Month
+    +double MeanValue
+    +double StdDevValue
+    +int SampleSize
+    +int BaselineStartYear
+    +int BaselineEndYear
+    +DateTime ComputedAt
+  }
+  class AnomalyEvent {
+    +int Id
+    +int CityId
+    +int BaselineId
+    +int? AdvisoryId
+    +MetricType MetricType
+    +SeverityTier SeverityTier
+    +DateTime StartedAt
+    +DateTime? EndedAt
+    +DateTime PeakAt
+    +double PeakObservedValue
+    +double PeakZScore
+    +double BaselineMeanSnapshot
+    +double BaselineStdDevSnapshot
+    +EventStatus Status
+    +DateTime CreatedAt
+    +Close(DateTime endedAtUtc) void
+  }
+  class Advisory {
+    +int Id
+    +MetricType MetricType
+    +SeverityTier SeverityTier
+    +string Locale
+    +AdvisoryCategory Category
+    +string Title
+    +string Body
+    +int Version
+    +DateTime EffectiveFrom
+  }
+  class MetricType {
+    <<enumeration>>
+    Temperature
+    Precipitation
+    WindSpeed
+  }
+  class SeverityTier {
+    <<enumeration>>
+    Normal
+    Watch
+    Warning
+    Extreme
+  }
+  class EventStatus {
+    <<enumeration>>
+    Active
+    Closed
+  }
+  class AdvisoryCategory {
+    <<enumeration>>
+    Health
+    Climate
+  }
+
+UserProfile "1" --> "0..*" WatchlistEntry : owns
+City "1" --> "0..*" WatchlistEntry : watched in
+City "1" --> "0..*" HistoricalObservation : has
+City "1" --> "0..*" Baseline : has
+City "1" --> "0..*" AnomalyEvent : hosts
+Baseline "1" --> "0..*" AnomalyEvent : snapshot source
+Advisory "0..1" --> "0..*" AnomalyEvent : suggested for
+AnomalyEvent ..> EventStatus
+AnomalyEvent ..> SeverityTier
+AnomalyEvent ..> MetricType
+Advisory ..> AdvisoryCategory

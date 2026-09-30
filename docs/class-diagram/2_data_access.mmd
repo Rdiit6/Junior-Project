@@ -1,0 +1,70 @@
+classDiagram
+direction TB
+  class IRepository~T~ {
+    <<interface>>
+    +Add(T item) void
+    +Remove(T item) void
+    +GetAll() List~T~
+    +Query(Func~T,bool~ filter) List~T~
+  }
+  class SqliteRepositoryBase {
+    <<abstract>>
+    #OpenConnection() SqliteConnection
+    #ExecuteNonQuery() int
+    #InsertAndGetId() int
+    #ReadList() List~T~
+  }
+  class UserProfileRepository {
+    +GetById(int id) UserProfile
+    +Update(UserProfile item) void
+  }
+  class CityRepository {
+    +GetById(int id) City
+    +GetWatchedBy(int profileId) List~City~
+  }
+  class WatchlistRepository {
+    +GetByProfile(int profileId) List~WatchlistEntry~
+    +Update(WatchlistEntry item) void
+  }
+  class HistoricalObservationRepository {
+    +AddRange(IEnumerable items) int
+    +GetRange(int cityId, MetricType metric, DateTime from, DateTime to) List~HistoricalObservation~
+  }
+  class BaselineRepository {
+    +GetByCityMetricMonth(int cityId, MetricType metric, int month) Baseline
+    +Upsert(Baseline item) void
+  }
+  class AdvisoryRepository {
+    +GetLatest(MetricType metric, SeverityTier tier, string locale) Advisory
+  }
+  class AnomalyEventRepository {
+    +GetOpenEvent(int cityId, MetricType metric) AnomalyEvent
+    +Close(int eventId, DateTime endedAtUtc) bool
+    +ExportCsv(string filePath) void
+    +ExportJson(string filePath) void
+  }
+  class DatabaseConfig {
+    <<static>>
+    +DbPath string
+    +ConnectionString string
+  }
+  class DatabaseInitializer {
+    <<static>>
+    +EnsureCreated(string connectionString, string schemaSqlPath) void
+  }
+
+SqliteRepositoryBase <|-- UserProfileRepository
+SqliteRepositoryBase <|-- CityRepository
+SqliteRepositoryBase <|-- WatchlistRepository
+SqliteRepositoryBase <|-- HistoricalObservationRepository
+SqliteRepositoryBase <|-- BaselineRepository
+SqliteRepositoryBase <|-- AdvisoryRepository
+SqliteRepositoryBase <|-- AnomalyEventRepository
+DatabaseInitializer ..> DatabaseConfig
+IRepository~T~ <|.. UserProfileRepository
+IRepository~T~ <|.. CityRepository
+IRepository~T~ <|.. WatchlistRepository
+IRepository~T~ <|.. HistoricalObservationRepository
+IRepository~T~ <|.. BaselineRepository
+IRepository~T~ <|.. AdvisoryRepository
+IRepository~T~ <|.. AnomalyEventRepository
