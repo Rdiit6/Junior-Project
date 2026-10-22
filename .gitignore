@@ -1,10 +1,28 @@
-# Secrets
+# Secrets (the template .env.example stays tracked)
 .env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+secrets.json
+appsettings.*.local.json
 
-# .NET build artifacts
+# .NET build artifacts and IDE folders
 bin/
 obj/
 *.user
+.vs/
+.idea/
 
-# SQLite local DB
+# SQLite local DB (including journal files)
 *.db
+*.db-shm
+*.db-wal
+*.db-journal
+
+# Personal AI agent settings and individual rules (never shared)
+CLAUDE.local.md
+AGENTS.local.md
+.claude/settings.local.json
+.cursor/rules/*.local.mdc
